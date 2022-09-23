@@ -15,7 +15,6 @@ import { config } from '@root/config'
 import applicationRoutes from '@root/routes'
 import { CustomError, IErrorResponse } from '@global/helpers/error-handlers'
 
-
 const SERVER_PORT = 5000
 const log: Logger = config.createLogger('setupServer')
 
