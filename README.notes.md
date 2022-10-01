@@ -1,17 +1,3 @@
-# Neccessary command line
-```
-npm init -y
-npm i typescript
-tsc --init
-```
-
-- redis
-```
-redis-server
-redis-cli
-redis-commander
-redis-cli shutdown
-```
 # Notes
 ## TypeScript
 - Exclamation mark (`!`): tells the TypeScript compiler that a value typed as optional cannot be null or undefined
