@@ -19,6 +19,8 @@ redis-cli shutdown
   - [x] Sign in
   - [x] Sign out
   - [ ] Recover password
+  - [ ] Unit test
+- [ ] Send email
 - [ ] Posts
 - [ ] Comments
 - [ ] Follower
