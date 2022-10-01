@@ -11,7 +11,7 @@ export class Helpers {
     return str.toLowerCase()
   }
 
-  static generateRandomInteger(intergerLength: number): Number {
+  static generateRandomInteger(intergerLength: number): number {
     const characters = '0123456789'
     let result = ' '
     const charactersLength = characters.length
@@ -19,5 +19,13 @@ export class Helpers {
       result += characters.charAt(Math.floor(Math.random() * charactersLength))
     }
     return parseInt(result, 10)
+  }
+
+  static parseJson(prop: string): any {
+    try {
+      JSON.parse(prop)
+    } catch (error) {
+      return prop
+    }
   }
 }
