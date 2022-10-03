@@ -17,7 +17,8 @@ sendGridMail.setApiKey(config.SENDGRID_API_KEY!)
 
 class MailTransport {
   public async sendEmail(receiverEmail: string, subject: string, body: string): Promise<void> {
-    if (config.NODE_ENV === 'test' || config.NODE_ENV === 'development') this.developmentEmailSender(receiverEmail, subject, body)
+    if (config.NODE_ENV === 'test' || config.NODE_ENV === 'development')
+      this.developmentEmailSender(receiverEmail, subject, body)
     else this.productionEmailSender(receiverEmail, subject, body)
   }
 
@@ -28,9 +29,9 @@ class MailTransport {
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: config.SENDER_EMAIL, // generated ethereal user
-        pass: config.SENDER_EMAIL_PASSWORD, // generated ethereal password
-      },
+        user: config.SENDER_EMAIL!, // generated ethereal user
+        pass: config.SENDER_EMAIL_PASSWORD! // generated ethereal password
+      }
     })
 
     const mailOptions: IMailOptions = {

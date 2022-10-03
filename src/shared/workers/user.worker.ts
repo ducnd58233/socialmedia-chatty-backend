@@ -20,4 +20,4 @@ class UserWorker {
   }
 }
 
-export const userWorker = new UserWorker()
+export const userWorker: UserWorker = new UserWorker()

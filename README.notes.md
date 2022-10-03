@@ -1,7 +1,7 @@
 # Notes
 ## TypeScript
 - Exclamation mark (`!`): tells the TypeScript compiler that a value typed as optional cannot be null or undefined
-- Question mark (`?`): undefined as type definition
+- Question mark (`?`): Optional
 - Way to create decorator (detail in *`shared/globals/decorators`*)
 - Why use prototype instead of this (detail in *`features/auth/controllers/signup.ts`*)
 ```

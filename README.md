@@ -1,26 +1,30 @@
 # Neccessary command line
+- typescript
 ```
 npm init -y
 npm i typescript
 tsc --init
 ```
-
 - redis
 ```
-redis-server
+redis-server // start redis server
 redis-cli
-redis-commander
+redis-commander // run redis gui
 redis-cli shutdown
+```
+- tests (jest)
+```
+jest // run all tests
 ```
 ---
 # Todo list:
-- [ ] Authentication
+- [x] Authentication
   - [x] Sign up
   - [x] Sign in
   - [x] Sign out
-  - [ ] Recover password
-  - [ ] Unit test
-- [ ] Send email
+  - [x] Recover password
+  - [x] Unit test
+- [x] Send email
 - [ ] Posts
 - [ ] Comments
 - [ ] Follower

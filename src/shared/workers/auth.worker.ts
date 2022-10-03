@@ -20,4 +20,4 @@ class AuthWorker {
   }
 }
 
-export const authWorker = new AuthWorker()
+export const authWorker: AuthWorker = new AuthWorker()
