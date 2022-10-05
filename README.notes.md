@@ -1,4 +1,5 @@
 # Notes
+interface -> model (schema) -> schemes (validation) -> controller -> route
 ## TypeScript
 - Exclamation mark (`!`): tells the TypeScript compiler that a value typed as optional cannot be null or undefined
 - Question mark (`?`): Optional
