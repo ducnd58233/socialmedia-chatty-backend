@@ -1,4 +1,4 @@
-import { socketIOPostObject } from './../../../shared/sockets/post.socket';
+import { socketIOPostObject } from '@socket/post.socket';
 import { ObjectId } from 'mongodb';
 import { joiValidation } from '@global/decorators/joi-validation.decorators'
 import { postSchema } from '@post/schemes/post'
@@ -6,6 +6,7 @@ import { Request, Response } from 'express'
 import HTTP_STATUS from 'http-status-codes'
 import { IPostDocument } from '@post/interfaces/post.interface'
 import { PostCache } from '@service/redis/post.cache'
+import { postQueue } from '@service/queues/post.queue';
 
 const postCache: PostCache = new PostCache()
 
@@ -43,6 +44,8 @@ export class Create {
       uId: `${req.currentUser!.uId}`,
       createdPost: createdPost
     })
+
+    postQueue.addPostJob('addPostToDB', { key: req.currentUser!.userId, value: createdPost })
 
     res.status(HTTP_STATUS.CREATED).json({ message: 'Post created successfully' })
   }
