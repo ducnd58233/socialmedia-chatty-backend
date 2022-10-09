@@ -4,7 +4,7 @@ import mongoose, { Document } from 'mongoose'
 interface IReactions {
   like: number
   love: number
-  haha: number
+  happy: number
   wow: number
   sad: number
   angry: number
@@ -36,7 +36,7 @@ export interface IGetPostsQuery {
 }
 
 export interface ISavePostToCache {
-  key: ObjectId | string
+  key: ObjectId | string // postId
   currentUserId: string
   uId: string
   createdPost: IPostDocument

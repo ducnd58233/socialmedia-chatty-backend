@@ -1,3 +1,4 @@
+import { postRoutes } from './features/post/routes/postRoutes';
 import { currentUserRoutes } from './features/auth/routes/currentRoutes'
 import { serverAdapter } from '@service/queues/base.queue'
 import { authRoutes } from '@auth/routes/authRoutes'
@@ -13,6 +14,7 @@ export default (app: Application) => {
     app.use(BASE_PATH, authRoutes.signoutRoute())
 
     app.use(BASE_PATH, authMiddleware.verifyUser, currentUserRoutes.routes())
+    app.use(BASE_PATH, authMiddleware.verifyUser, postRoutes.routes())
   }
 
   routes()

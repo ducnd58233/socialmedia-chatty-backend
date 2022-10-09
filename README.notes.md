@@ -11,7 +11,9 @@ the reason using SignUp.prototype.signupData and not this.signupData is because 
 - Why cast as `unknown` type first?
 ```
 To make that value become no type to easier cast to another type
+Sometimes that value overlap some type of the interface so need to cast unknown first
 ```
+- Reason why some class only `export class` and some `export instance` because some `export class` if using `export instance` will have some connection error
 ## MongoDB
 - aggregate: (detail in *`shared/services/redis/user.cache.ts`*)
   + is more efficient than findById, findOne, ..., cuz have more options
