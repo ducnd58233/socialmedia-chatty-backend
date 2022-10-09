@@ -34,24 +34,39 @@ export class PostCache extends BaseCache {
 
     // original is string
     const firstList: string[] = [
-      '_id', `${_id}`,
-      'userId', `${userId}`,
-      'username', `${username}`,
-      'email', `${email}`,
-      'avatarColor', `${avatarColor}`,
-      'profilePicture', `${profilePicture}`,
-      'post',`${post}`,
-      'bgColor',`${bgColor}`,
-      'gifUrl', `${gifUrl}`,
-      'privacy', `${privacy}`
+      '_id',
+      `${_id}`,
+      'userId',
+      `${userId}`,
+      'username',
+      `${username}`,
+      'email',
+      `${email}`,
+      'avatarColor',
+      `${avatarColor}`,
+      'profilePicture',
+      `${profilePicture}`,
+      'post',
+      `${post}`,
+      'bgColor',
+      `${bgColor}`,
+      'gifUrl',
+      `${gifUrl}`,
+      'privacy',
+      `${privacy}`
     ]
 
     const secondList: string[] = [
-      'commentsCount', `${commentsCount}`,
-      'reactions', JSON.stringify(reactions),
-      'imgVersion', `${imgVersion}`,
-      'imgId', `${imgId}`,
-      'createdAt', `${createdAt}`
+      'commentsCount',
+      `${commentsCount}`,
+      'reactions',
+      JSON.stringify(reactions),
+      'imgVersion',
+      `${imgVersion}`,
+      'imgId',
+      `${imgId}`,
+      'createdAt',
+      `${createdAt}`
     ]
 
     const dataToSave: string[] = [...firstList, ...secondList]
@@ -63,7 +78,7 @@ export class PostCache extends BaseCache {
 
       const postsCount: string[] = await this.client.HMGET(`users:${currentUserId}`, 'postsCount')
       const multi: ReturnType<typeof this.client.multi> = this.client.multi()
-      multi.ZADD('post', { score: parseInt(uId, 10), value: `${key}` } )
+      multi.ZADD('post', { score: parseInt(uId, 10), value: `${key}` })
       multi.HSET(`posts:${key}`, dataToSave)
       const count: number = parseInt(postsCount[0], 10) + 1
       multi.HSET(`users:${currentUserId}`, ['postsCount', count])

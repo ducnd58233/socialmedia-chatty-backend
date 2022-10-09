@@ -1,10 +1,9 @@
-import { postService } from './../services/db/post.service';
+import { postService } from './../services/db/post.service'
 import { Job, DoneCallback } from 'bull'
 import Logger from 'bunyan'
 import { config } from '@root/config'
 
 const log: Logger = config.createLogger('authWorker')
-
 
 class PostWorker {
   async savePostToDB(job: Job, done: DoneCallback): Promise<void> {

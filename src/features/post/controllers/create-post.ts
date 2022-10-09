@@ -1,5 +1,5 @@
 import { socketIOPostObject } from '@socket/post.socket'
-import { ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb'
 import { joiValidation } from '@global/decorators/joi-validation.decorators'
 import { postSchema, postWithImageSchema } from '@post/schemes/post'
 import { Request, Response } from 'express'
@@ -36,7 +36,7 @@ export class Create {
       imgVersion: '',
       imgId: '',
       reactions: { like: 0, love: 0, happy: 0, sad: 0, wow: 0, angry: 0 },
-      createdAt: new Date(),
+      createdAt: new Date()
     } as unknown as IPostDocument
 
     socketIOPostObject.emit('add post', createdPost) // user can receive data and don't have to wait to save to cache
@@ -79,7 +79,7 @@ export class Create {
       imgVersion: result.version.toString(),
       imgId: result.public_id,
       reactions: { like: 0, love: 0, happy: 0, sad: 0, wow: 0, angry: 0 },
-      createdAt: new Date(),
+      createdAt: new Date()
     } as unknown as IPostDocument
 
     socketIOPostObject.emit('add post with image', createdPost) // user can receive data and don't have to wait to save to cache

@@ -1,4 +1,4 @@
-import { SocketIOPostHandler } from './shared/sockets/post.socket';
+import { SocketIOPostHandler } from './shared/sockets/post.socket'
 import { Application, json, urlencoded, Response, Request, NextFunction } from 'express'
 import http from 'http'
 import compression from 'compression'

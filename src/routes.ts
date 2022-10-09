@@ -1,4 +1,4 @@
-import { postRoutes } from './features/post/routes/postRoutes';
+import { postRoutes } from './features/post/routes/postRoutes'
 import { currentUserRoutes } from './features/auth/routes/currentRoutes'
 import { serverAdapter } from '@service/queues/base.queue'
 import { authRoutes } from '@auth/routes/authRoutes'
