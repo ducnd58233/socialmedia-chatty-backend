@@ -4,8 +4,11 @@ import { config } from '@root/config'
 import Logger from 'bunyan'
 import { Helpers } from '@global/helpers/helpers'
 import { IPostDocument, IReactions, ISavePostToCache } from '@post/interfaces/post.interface'
+import { RedisCommandRawReply } from '@redis/client/dist/lib/commands'
 
 const log: Logger = config.createLogger('postCache')
+
+export type PostCacheMultiType = string | number | Buffer | RedisCommandRawReply[] | IPostDocument | IPostDocument[]
 
 export class PostCache extends BaseCache {
   constructor() {
@@ -100,7 +103,7 @@ export class PostCache extends BaseCache {
       for (const value of reply) {
         multi.HGETALL(`posts:${value}`)
       }
-      const replies: any = await multi.exec()
+      const replies: PostCacheMultiType = await multi.exec() as PostCacheMultiType
       const postReplies: IPostDocument[] = []
 
       for (const post of replies as IPostDocument[]) {
