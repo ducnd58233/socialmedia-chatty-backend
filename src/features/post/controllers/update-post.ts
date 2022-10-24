@@ -1,4 +1,4 @@
-import { BadRequestError } from './../../../shared/globals/helpers/error-handlers';
+import { BadRequestError } from './../../../shared/globals/helpers/error-handlers'
 import { postSchema, postWithImageSchema } from '@post/schemes/post'
 import { Request, Response } from 'express'
 import HTTP_STATUS from 'http-status-codes'

@@ -24,7 +24,6 @@ class PostRoutes {
     this.router.patch('/post/:postId', authMiddleware.checkAuthentication, Update.prototype.post)
     this.router.patch('/post/image/:postId', authMiddleware.checkAuthentication, Update.prototype.postWithImage)
 
-
     return this.router
   }
 }
