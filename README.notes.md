@@ -1,5 +1,11 @@
 # Notes
 interface -> model (schema) -> schemes (validation) -> controller -> route
+- services:
+    - db: interact with main db (mongodb)
+    - queues: create job (handeling from workers) and add to queue
+    - redis: interact with redis
+    - sockets: implement socket
+    - workers: handling job (interact with main db)
 ## TypeScript
 - Exclamation mark (`!`): tells the TypeScript compiler that a value typed as optional cannot be null or undefined
 - Question mark (`?`): Optional

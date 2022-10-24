@@ -2,6 +2,7 @@ import { authMiddleware } from '@global/helpers/auth-middleware'
 import { Create } from '@post/controllers/create-post'
 import { Delete } from '@post/controllers/delete-post'
 import { Get } from '@post/controllers/get-posts'
+import { Update } from '@post/controllers/update-post'
 import express, { Router } from 'express'
 
 class PostRoutes {
@@ -19,6 +20,10 @@ class PostRoutes {
     this.router.post('/post/image/post', authMiddleware.checkAuthentication, Create.prototype.postWithImage)
 
     this.router.delete('/post/:postId', authMiddleware.checkAuthentication, Delete.prototype.post)
+
+    this.router.patch('/post/:postId', authMiddleware.checkAuthentication, Update.prototype.post)
+    this.router.patch('/post/image/:postId', authMiddleware.checkAuthentication, Update.prototype.postWithImage)
+
 
     return this.router
   }
