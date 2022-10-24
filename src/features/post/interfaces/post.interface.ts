@@ -22,6 +22,7 @@ export interface IPostDocument extends Document {
   commentsCount: number
   imgVersion?: string // cloudinary
   imgId?: string // cloudinary
+  feelings?: string
   gifUrl?: string
   privacy?: string
   reactions?: IReactions
@@ -43,7 +44,7 @@ export interface ISavePostToCache {
 }
 
 export interface IPostJobData {
-  key?: string
+  key?: ObjectId | string
   value?: IPostDocument
   keyOne?: string
   keyTwo?: string

@@ -10,7 +10,12 @@ class PostService {
     await Promise.all([post, user])
   }
 
-  public async getPosts(query: IGetPostsQuery, skip = 0, limit = 0, sort: Record<string, 1 | -1> ): Promise<IPostDocument[]> {
+  public async getPosts(
+    query: IGetPostsQuery,
+    skip = 0,
+    limit = 0,
+    sort: Record<string, 1 | -1>
+  ): Promise<IPostDocument[]> {
     let postQuery = {}
     if (query?.imgId && query?.gifUrl) {
       postQuery = { $or: [{ imgId: { $ne: '' } }, { gifUrl: { $ne: '' } }] }
