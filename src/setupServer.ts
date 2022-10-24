@@ -1,3 +1,4 @@
+import { SocketIOPostHandler } from './shared/sockets/post.socket'
 import { Application, json, urlencoded, Response, Request, NextFunction } from 'express'
 import http from 'http'
 import compression from 'compression'
@@ -113,6 +114,8 @@ export class ChattyServer {
   }
 
   private socketIOConnections(io: Server): void {
-    log.info('socketIOConnection')
+    const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io)
+
+    postSocketHandler.listen()
   }
 }

@@ -1,4 +1,11 @@
 # Notes
+interface -> model (schema) -> schemes (validation) -> controller -> route
+- services:
+    - db: interact with main db (mongodb)
+    - queues: create job (handeling from workers) and add to queue
+    - redis: interact with redis
+    - sockets: implement socket
+    - workers: handling job (interact with main db)
 ## TypeScript
 - Exclamation mark (`!`): tells the TypeScript compiler that a value typed as optional cannot be null or undefined
 - Question mark (`?`): Optional
@@ -10,7 +17,9 @@ the reason using SignUp.prototype.signupData and not this.signupData is because 
 - Why cast as `unknown` type first?
 ```
 To make that value become no type to easier cast to another type
+Sometimes that value overlap some type of the interface so need to cast unknown first
 ```
+- Reason why some class only `export class` and some `export instance` because some `export class` if using `export instance` will have some connection error
 ## MongoDB
 - aggregate: (detail in *`shared/services/redis/user.cache.ts`*)
   + is more efficient than findById, findOne, ..., cuz have more options
