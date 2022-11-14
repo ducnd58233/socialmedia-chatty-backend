@@ -45,4 +45,4 @@ class ReactionService {
   }
 }
 
-export const reactionService: ReactionService = new ReactionService()
+export const reactionsService: ReactionService = new ReactionService()
