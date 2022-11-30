@@ -3,7 +3,8 @@ import { BaseCache } from '@service/redis/base.cache'
 import { config } from '@root/config'
 import Logger from 'bunyan'
 import { Helpers } from '@global/helpers/helpers'
-import { IPostDocument, IReactions, ISavePostToCache } from '@post/interfaces/post.interface'
+import { IPostDocument, ISavePostToCache } from '@post/interfaces/post.interface'
+import { IReactions } from '@reaction/interfaces/reactions.interface'
 import { RedisCommandRawReply } from '@redis/client/dist/lib/commands'
 
 const log: Logger = config.createLogger('postCache')
