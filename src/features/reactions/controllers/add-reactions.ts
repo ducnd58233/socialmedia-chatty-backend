@@ -33,7 +33,7 @@ export class Add {
       previousReaction,
       reactionObject
     }
-    
+
     reactionsQueue.addReactionsJob('addReactionToDB', reactionDataFromDB)
 
     res.status(HTTP_STATUS.OK).json({ message: 'Reaction added successfully' })
