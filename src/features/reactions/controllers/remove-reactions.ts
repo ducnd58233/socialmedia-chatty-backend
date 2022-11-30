@@ -20,6 +20,6 @@ export class Remove {
 
     reactionsQueue.addReactionsJob('removeReactionFromDB', reactionDataFromDB)
 
-    res.status(HTTP_STATUS.OK).json({ message: 'Reaction remove successfully' })
+    res.status(HTTP_STATUS.OK).json({ message: 'Reaction removed successfully' })
   }
 }
