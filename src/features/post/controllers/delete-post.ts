@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
 import HTTP_STATUS from 'http-status-codes'
-import { IPostDocument } from '@post/interfaces/post.interface'
 import { PostCache } from '@service/redis/post.cache'
-import { postService } from '@service/db/post.service'
 import { postQueue } from '@service/queues/post.queue'
 import { socketIOPostObject } from '@socket/post.socket'
 
