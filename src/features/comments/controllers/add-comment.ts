@@ -1,4 +1,4 @@
-import { ICommentDocument, ICommentJob } from './../interfaces/comment.interface'
+import { ICommentDocument, ICommentJob } from '@comment/interfaces/comment.interface'
 import { ObjectId } from 'mongodb'
 import { joiValidation } from '@global/decorators/joi-validation.decorators'
 import HTTP_STATUS from 'http-status-codes'
