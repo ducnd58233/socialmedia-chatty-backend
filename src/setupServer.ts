@@ -1,4 +1,3 @@
-import { SocketIOPostHandler } from './shared/sockets/post.socket'
 import { Application, json, urlencoded, Response, Request, NextFunction } from 'express'
 import http from 'http'
 import compression from 'compression'
@@ -15,6 +14,8 @@ import 'express-async-errors'
 import { config } from '@root/config'
 import applicationRoutes from '@root/routes'
 import { CustomError, IErrorResponse } from '@global/helpers/error-handlers'
+import { SocketIOFollowerHandler } from '@socket/follower'
+import { SocketIOPostHandler } from '@socket/post.socket'
 
 const SERVER_PORT = 5000
 const log: Logger = config.createLogger('setupServer')
@@ -115,7 +116,9 @@ export class ChattyServer {
 
   private socketIOConnections(io: Server): void {
     const postSocketHandler: SocketIOPostHandler = new SocketIOPostHandler(io)
+    const followerSocketHandler: SocketIOFollowerHandler = new SocketIOFollowerHandler(io)
 
     postSocketHandler.listen()
+    followerSocketHandler.listen()
   }
 }

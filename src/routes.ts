@@ -6,6 +6,7 @@ import { serverAdapter } from '@service/queues/base.queue'
 import { authRoutes } from '@auth/routes/authRoutes'
 import { Application } from 'express'
 import { authMiddleware } from '@global/helpers/auth-middleware'
+import { followerRoutes } from '@follower/routes/followerRoutes'
 
 const BASE_PATH = '/api/v1'
 
@@ -19,6 +20,7 @@ export default (app: Application) => {
     app.use(BASE_PATH, authMiddleware.verifyUser, postRoutes.routes())
     app.use(BASE_PATH, authMiddleware.verifyUser, reactionsRoutes.routes())
     app.use(BASE_PATH, authMiddleware.verifyUser, commentRoutes.routes())
+    app.use(BASE_PATH, authMiddleware.verifyUser, followerRoutes.routes())
   }
 
   routes()
