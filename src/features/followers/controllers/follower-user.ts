@@ -1,4 +1,4 @@
-import { followerQueue } from '@service/queues/follower.queue';
+import { followerQueue } from '@service/queues/follower.queue'
 import { IFollowerData } from '@follower/interfaces/follower.interface'
 import { FollowerCache } from '@service/redis/follower.cache'
 import { Request, Response } from 'express'
@@ -40,19 +40,19 @@ export class Add {
     socketIOFollowerObject.emit('add follower', addFolloweeData)
 
     const addFollowerToCache: Promise<void> = followerCache.saveFollowerToCache(
-      `followers:${req.currentUser!.userId}`,
+      `following:${req.currentUser!.userId}`,
       `${followerId}`
     )
     const addFolloweeToCache: Promise<void> = followerCache.saveFollowerToCache(
-      `following:${followerId}`,
+      `followers:${followerId}`,
       `${req.currentUser!.userId}`
     )
     await Promise.all([addFollowerToCache, addFolloweeToCache])
 
     // send data to queue
     followerQueue.addFollowerJob('addFollowerToDB', {
-      keyOne: `${req.currentUser!.userId}`,
-      keyTwo: `${followerId}`,
+      followeeId: `${req.currentUser!.userId}`,
+      followerId: `${followerId}`,
       username: req.currentUser!.username,
       followerDocumentId: followerObjectId
     })

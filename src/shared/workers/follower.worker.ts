@@ -8,9 +8,9 @@ const log: Logger = config.createLogger('followerWorker')
 class FollowerWorker {
   async addFollowerToDB(job: Job, done: DoneCallback): Promise<void> {
     try {
-      const { keyOne, keyTwo, username, followerDocumentId } = job.data
+      const { followeeId, followerId, username, followerDocumentId } = job.data
       // add method to send data to database
-      await followerService.addFollowerToDB(keyOne, keyTwo, username, followerDocumentId)
+      await followerService.addFollowerToDB(followerId, followeeId, username, followerDocumentId)
       job.progress(100)
       done(null, job.data)
     } catch (error) {
@@ -21,9 +21,9 @@ class FollowerWorker {
 
   async removeFollowerFromDB(job: Job, done: DoneCallback): Promise<void> {
     try {
-      const { keyOne, keyTwo } = job.data
+      const { followeeId, followerId } = job.data
       // add method to send data to database
-      await followerService.removeFollowerFromDB(keyOne, keyTwo)
+      await followerService.removeFollowerFromDB(followeeId, followerId)
       job.progress(100)
       done(null, job.data)
     } catch (error) {

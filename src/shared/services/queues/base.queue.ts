@@ -1,4 +1,4 @@
-import { IFollowerJobData } from '@follower/interfaces/follower.interface';
+import { IFollowerJobData } from '@follower/interfaces/follower.interface'
 import { IEmailJob } from '@user/interfaces/user.interface'
 import Queue, { Job } from 'bull'
 import Logger from 'bunyan'

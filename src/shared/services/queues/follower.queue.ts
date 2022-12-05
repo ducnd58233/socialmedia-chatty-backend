@@ -1,5 +1,5 @@
-import { IFollowerJobData } from '@follower/interfaces/follower.interface';
-import { followerWorker } from '@worker/follower.worker';
+import { IFollowerJobData } from '@follower/interfaces/follower.interface'
+import { followerWorker } from '@worker/follower.worker'
 import { BaseQueue } from '@service/queues/base.queue'
 
 class FollowerQueue extends BaseQueue {
