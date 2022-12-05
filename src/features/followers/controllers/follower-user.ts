@@ -1,3 +1,4 @@
+import { followerQueue } from '@service/queues/follower.queue';
 import { IFollowerData } from '@follower/interfaces/follower.interface'
 import { FollowerCache } from '@service/redis/follower.cache'
 import { Request, Response } from 'express'
@@ -49,6 +50,12 @@ export class Add {
     await Promise.all([addFollowerToCache, addFolloweeToCache])
 
     // send data to queue
+    followerQueue.addFollowerJob('addFollowerToDB', {
+      keyOne: `${req.currentUser!.userId}`,
+      keyTwo: `${followerId}`,
+      username: req.currentUser!.username,
+      followerDocumentId: followerObjectId
+    })
 
     res.status(HTTP_STATUS.OK).json({ message: 'Following user now' })
   }
