@@ -8,6 +8,7 @@ import { followerQueue } from '@service/queues/follower.queue'
 import { Add } from '@follower/controllers/follower-user'
 import { UserCache } from '@service/redis/user.cache'
 import { FollowerCache } from '@service/redis/follower.cache'
+import { CustomError } from '@global/helpers/error-handlers'
 
 jest.useFakeTimers()
 jest.mock('@service/queues/base.queue')
@@ -32,6 +33,18 @@ describe('Add', () => {
   })
 
   describe('follower', () => {
+    it('should throw bad request error if user follow themself', async () => {
+      const req: Request = followersMockRequest({}, authUserPayload, {
+        followerId: `${existingUser._id}`
+      }) as Request
+      const res: Response = followersMockResponse()
+
+      Add.prototype.follower(req, res).catch((error: CustomError) => {
+        expect(error.statusCode).toEqual(400)
+        expect(error.serializeErrors().message).toEqual('Error occured. Try again!')
+      })
+    })
+
     it('should call updateFollowersCountInCache', async () => {
       const req: Request = followersMockRequest({}, authUserPayload, {
         followerId: '6064861bc25eaa5a5d2f9bf4'

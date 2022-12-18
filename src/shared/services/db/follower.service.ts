@@ -1,3 +1,4 @@
+import { IFollowerData } from '@follower/interfaces/follower.interface'
 import { FollowerModel } from '@follower/models/follower.schema'
 import { UserModel } from '@user/models/user.schema'
 import { ObjectId } from 'mongodb'
@@ -73,6 +74,74 @@ class FollowerService {
 
     await UserModel.updateOne({ _id: followeeId }, { $inc: { followersCount: -1 } })
     await UserModel.updateOne({ _id: followerId }, { $inc: { followingCount: -1 } })
+  }
+
+  public async getFolloweeData(userObjectId: ObjectId): Promise<IFollowerData[]> {
+    const followee: IFollowerData[] = await FollowerModel.aggregate([
+      { $match: { followerId: userObjectId } },
+      { $lookup: { from: 'User', localField: 'followeeId', foreignField: '_id', as: 'followeeId' } },
+      { $unwind: '$followeeId' },
+      { $lookup: { from: 'Auth', localField: 'followeeId.authId', foreignField: '_id', as: 'authId' } },
+      { $unwind: '$authId' },
+      {
+        $addFields: {
+          _id: '$followeeId._id',
+          username: '$authId.userName',
+          avatarColor: '$authId.avatarColor',
+          udId: '$authId.uId',
+          postCount: '$followeeId.postsCount',
+          followersCount: '$followeeId.followersCount',
+          followingCount: '$followeeId.followingCount',
+          profilePicture: '$followeeId.profilePicture',
+          userProfile: '$followeeId'
+        }
+      },
+      // remove the origin property (follower data)
+      {
+        $project: {
+          authId: 0,
+          followerId: 0,
+          followeeId: 0,
+          createdAt: 0,
+          _v: 0
+        }
+      }
+    ])
+    return followee
+  }
+
+  public async getFollowerData(userObjectId: ObjectId): Promise<IFollowerData[]> {
+    const follower: IFollowerData[] = await FollowerModel.aggregate([
+      { $match: { followeeId: userObjectId } },
+      { $lookup: { from: 'User', localField: 'followerId', foreignField: '_id', as: 'followerId' } },
+      { $unwind: '$followerId' },
+      { $lookup: { from: 'Auth', localField: 'followerId.authId', foreignField: '_id', as: 'authId' } },
+      { $unwind: '$authId' },
+      {
+        $addFields: {
+          _id: '$followerId._id',
+          username: '$authId.userName',
+          avatarColor: '$authId.avatarColor',
+          udId: '$authId.uId',
+          postCount: '$followerId.postsCount',
+          followersCount: '$followerId.followersCount',
+          followingCount: '$followerId.followingCount',
+          profilePicture: '$followerId.profilePicture',
+          userProfile: '$followerId'
+        }
+      },
+      // remove the origin property (follower data)
+      {
+        $project: {
+          authId: 0,
+          followerId: 0,
+          followeeId: 0,
+          createdAt: 0,
+          _v: 0
+        }
+      }
+    ])
+    return follower
   }
 }
 

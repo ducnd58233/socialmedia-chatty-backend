@@ -8,6 +8,7 @@ import { UserCache } from '@service/redis/user.cache'
 import { IUserDocument } from '@user/interfaces/user.interface'
 import mongoose from 'mongoose'
 import { socketIOFollowerObject } from '@socket/follower'
+import { BadRequestError } from '@global/helpers/error-handlers'
 
 const followerCache: FollowerCache = new FollowerCache()
 const userCache: UserCache = new UserCache()
@@ -15,6 +16,16 @@ const userCache: UserCache = new UserCache()
 export class Add {
   public async follower(req: Request, res: Response): Promise<void> {
     const { followerId } = req.params
+    if (req.currentUser!.userId === followerId) {
+      throw new BadRequestError('Error occured. Try again!')
+    }
+
+    const cachedFollower: Promise<IUserDocument> = userCache.getUserFromCache(followerId) as Promise<IUserDocument>
+    const cachedFollowee: Promise<IUserDocument> = userCache.getUserFromCache(
+      `${req.currentUser!.userId}`
+    ) as Promise<IUserDocument>
+    const response: [IUserDocument, IUserDocument] = await Promise.all([cachedFollower, cachedFollowee])
+
     // update count in cache
     const followersCount: Promise<void> = followerCache.updateFollowersCountInCache(
       `${followerId}`,
@@ -27,12 +38,6 @@ export class Add {
       1
     )
     await Promise.all([followersCount, followeeCount])
-
-    const cachedFollower: Promise<IUserDocument> = userCache.getUserFromCache(followerId) as Promise<IUserDocument>
-    const cachedFollowee: Promise<IUserDocument> = userCache.getUserFromCache(
-      `${req.currentUser!.userId}`
-    ) as Promise<IUserDocument>
-    const response: [IUserDocument, IUserDocument] = await Promise.all([cachedFollower, cachedFollowee])
 
     const followerObjectId: ObjectId = new ObjectId()
     const addFolloweeData: IFollowerData = Add.prototype.userData(response[0])
