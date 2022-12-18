@@ -3,6 +3,7 @@ import express, { Router } from 'express'
 import { Add } from '@follower/controllers/follower-user'
 import { Remove } from '@follower/controllers/unfollow-user'
 import { Get } from '@follower/controllers/get-followers'
+import { Blocked } from '@follower/controllers/block-user'
 
 class FollowerRoutes {
   private router: Router
@@ -18,6 +19,9 @@ class FollowerRoutes {
       authMiddleware.checkAuthentication,
       Remove.prototype.follower
     )
+
+    this.router.patch('/user/block/:followerId', authMiddleware.checkAuthentication, Blocked.prototype.block)
+    this.router.patch('/user/unblock/:followerId', authMiddleware.checkAuthentication, Blocked.prototype.unblock)
 
     this.router.get('/user/following', authMiddleware.checkAuthentication, Get.prototype.userFollowing)
     this.router.get('/user/followers/:userId', authMiddleware.checkAuthentication, Get.prototype.userFollowers)

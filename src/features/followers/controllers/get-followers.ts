@@ -28,6 +28,6 @@ export class Get {
       ? cachedFollowers
       : await followerService.getFollowerData(userObjectId)
 
-    res.status(HTTP_STATUS.OK).json({ message: 'User following', followers })
+    res.status(HTTP_STATUS.OK).json({ message: 'User followers', followers })
   }
 }
