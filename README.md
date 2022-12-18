@@ -25,10 +25,10 @@ jest // run all tests
   - [x] Recover password
   - [x] Unit test
 - [x] Send email
-- [ ] Posts
-- [ ] Comments
-- [ ] Follower
-- [ ] Following
+- [x] Posts
+- [x] Comments
+- [x] Follower
+- [x] Following
 - [ ] Block
 - [ ] BlockedBy
 - [ ] Notifications

@@ -34,7 +34,30 @@ Sometimes that value overlap some type of the interface so need to cast unknown 
     + Set as 0: excluded that data
     + Set as 1: included that data
     + Set as '$authId.field' (can only be used if has` $unwind`)
+- compare SQL with Aggregate:
+
+|SQL command|Aggregation framework operator|
+|:---:|---|
+|SELECT|$project, $group functions: $sum, $min, etc.|
+|FROM|db.collectionName.aggregate(...)|
+|JOIN|$unwind|
+|GROUP BY|$group|
+|HAVING|$match|
 ## Redis
+- Types data in Redis
+1. Strings
+2. Lists
+3. Sets
+4. Hashes
+```
+HGET: Get the value of a hash field
+HINCRBY: Inc the integer value of a hash field by the given number
+HLEN: Get number of fields in hash
+HGETALL: Get all the fields and values in a hash
+HMGET: Get the values of all the given hash fields
+HSET: Set the string value of a hash field
+```
+5. Sorted Set (ZSET)
 - (detail in *`shared/services/redis/user.cache.ts`*)
 ```
 - to store in redis need to convert as a list and value will be string

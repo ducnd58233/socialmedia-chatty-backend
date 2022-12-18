@@ -257,7 +257,6 @@ describe('SignUp', () => {
     expect(req.session?.jwt).toBeDefined()
     expect(res.json).toHaveBeenCalledWith({
       message: 'User created successfully',
-      user: userSpy.mock.calls[0][2],
       token: req.session?.jwt
     })
   })
