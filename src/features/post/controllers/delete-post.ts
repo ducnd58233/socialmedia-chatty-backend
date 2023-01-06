@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import HTTP_STATUS from 'http-status-codes'
 import { PostCache } from '@service/redis/post.cache'
 import { postQueue } from '@service/queues/post.queue'
-import { socketIOPostObject } from '@socket/post.socket'
+import { socketIOPostObject } from '@socket/post'
 
 const postCache: PostCache = new PostCache()
 

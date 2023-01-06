@@ -1,4 +1,4 @@
-import { socketIOPostObject } from '@socket/post.socket'
+import { socketIOPostObject } from '@socket/post'
 import { ObjectId } from 'mongodb'
 import { joiValidation } from '@global/decorators/joi-validation.decorators'
 import { postSchema, postWithImageSchema } from '@post/schemes/post'
