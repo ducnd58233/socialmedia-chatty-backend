@@ -6,8 +6,10 @@ import { IPostDocument } from '@post/interfaces/post.interface'
 import { UserCache } from '@service/redis/user.cache'
 import { IUserDocument } from '@user/interfaces/user.interface'
 import { NotificationModel } from '@notification/models/notification.schema'
-import { INotificationDocument } from '@notification/interfaces/notification.interface'
+import { INotificationDocument, INotificationTemplate } from '@notification/interfaces/notification.interface'
 import { socketIONotificationObject } from '@socket/notification'
+import { notificationTemplate } from '@service/emails/templates/notifications/notification-template'
+import { emailQueue } from '@service/queues/email.queue'
 
 const userCache: UserCache = new UserCache()
 
@@ -30,7 +32,7 @@ class CommentService {
       const notifications = await notificationModel.insertNotification({
         userFrom,
         userTo,
-        message: `${username} commented on your post.`,
+        message: `${username} commented on your post. ${response[0].comment}`,
         notificationType: 'comment',
         entityId: new mongoose.Types.ObjectId(postId),
         createdItemId: new mongoose.Types.ObjectId(response[0]._id!),
@@ -46,6 +48,17 @@ class CommentService {
       socketIONotificationObject.emit('insert notification', notifications, { userTo })
 
       // send to email queue
+      const templateParams: INotificationTemplate = {
+        username: response[2].username!,
+        message: `${username} commented on your post. ${response[0].comment}`,
+        header: 'Comment Notification'
+      }
+      const template: string = notificationTemplate.notificationMessageTemplate(templateParams)
+      emailQueue.addEmailJob('commentsEmail', {
+        receiverEmail: response[2].email!,
+        template,
+        subject: 'Post notification'
+      })
     }
   }
 
