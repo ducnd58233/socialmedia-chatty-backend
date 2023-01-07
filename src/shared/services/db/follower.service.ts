@@ -1,8 +1,17 @@
-import { IFollowerData } from '@follower/interfaces/follower.interface'
+import { IUserDocument } from '@user/interfaces/user.interface'
+import { IFollowerData, IFollowerDocument } from '@follower/interfaces/follower.interface'
 import { FollowerModel } from '@follower/models/follower.schema'
 import { UserModel } from '@user/models/user.schema'
 import { ObjectId } from 'mongodb'
-import mongoose from 'mongoose'
+import mongoose, { Query, UpdateWriteOpResult } from 'mongoose'
+import { INotificationDocument, INotificationTemplate } from '@notification/interfaces/notification.interface'
+import { NotificationModel } from '@notification/models/notification.schema'
+import { socketIONotificationObject } from '@socket/notification'
+import { notificationTemplate } from '@service/emails/templates/notifications/notification-template'
+import { emailQueue } from '@service/queues/email.queue'
+import { UserCache } from '@service/redis/user.cache'
+
+const userCache: UserCache = new UserCache()
 
 class FollowerService {
   public async addFollowerToDB(
@@ -14,7 +23,7 @@ class FollowerService {
     const followerObjectId: ObjectId = new mongoose.Types.ObjectId(userId)
     const followeeObjectId: ObjectId = new mongoose.Types.ObjectId(followeeId)
 
-    await FollowerModel.create({
+    const following: IFollowerDocument = await FollowerModel.create({
       _id: followerDocumentId,
       followeeId: followeeObjectId,
       followerId: followerObjectId
@@ -35,11 +44,55 @@ class FollowerService {
     //   }
     // ])
 
-    await UserModel.updateOne({ _id: userId }, { $inc: { followingCount: 1 } })
-    await UserModel.updateOne({ _id: followeeId }, { $inc: { followersCount: 1 } })
-    await UserModel.findOne({ _id: userId })
+    const updateFollowingCount: Query<UpdateWriteOpResult, IUserDocument> = UserModel.updateOne(
+      { _id: userId },
+      { $inc: { followingCount: 1 } }
+    ) as Query<UpdateWriteOpResult, IUserDocument>
+    const updateFollowersCount: Query<UpdateWriteOpResult, IUserDocument> = UserModel.updateOne(
+      { _id: followeeId },
+      { $inc: { followersCount: 1 } }
+    ) as Query<UpdateWriteOpResult, IUserDocument>
 
-    // await Promise.all([users, UserModel.findOne({ _id: followeeId })])
+    const response: [UpdateWriteOpResult, UpdateWriteOpResult, IUserDocument | null] = await Promise.all([
+      updateFollowingCount,
+      updateFollowersCount,
+      userCache.getUserFromCache(followeeId)
+    ])
+
+    // send follower notification
+    if (response[2]?.notifications.follows && userId !== followeeId) {
+      const notificationModel: INotificationDocument = new NotificationModel()
+      const notifications = await notificationModel.insertNotification({
+        userFrom: userId,
+        userTo: followeeId,
+        message: `${username} is now following you.`,
+        notificationType: 'follows',
+        entityId: new mongoose.Types.ObjectId(userId),
+        createdItemId: new mongoose.Types.ObjectId(following._id!),
+        createdAt: new Date(),
+        comment: '',
+        post: '',
+        imgId: '',
+        imgVersion: '',
+        gifUrl: '',
+        reaction: ''
+      })
+      // send to client with socketio
+      socketIONotificationObject.emit('insert notification', notifications, { followeeId })
+
+      // send to email queue
+      const templateParams: INotificationTemplate = {
+        username: response[2].username!,
+        message: `${username} is now following you.`,
+        header: 'Follower Notification'
+      }
+      const template: string = notificationTemplate.notificationMessageTemplate(templateParams)
+      emailQueue.addEmailJob('followersEmail', {
+        receiverEmail: response[2].email!,
+        template,
+        subject: `${username} is now following you.`
+      })
+    }
   }
 
   public async removeFollowerFromDB(followeeId: string, followerId: string): Promise<void> {

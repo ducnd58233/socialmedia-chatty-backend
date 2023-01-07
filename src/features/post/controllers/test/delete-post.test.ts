@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { Server } from 'socket.io'
 import { authUserPayload } from '@root/mocks/auth.mock'
-import * as postServer from '@socket/post.socket'
+import * as postServer from '@socket/post'
 import { newPost, postMockRequest, postMockResponse } from '@root/mocks/post.mock'
 import { postQueue } from '@service/queues/post.queue'
 import { Delete } from '@post/controllers/delete-post'
