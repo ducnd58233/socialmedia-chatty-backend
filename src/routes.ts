@@ -7,6 +7,7 @@ import { authRoutes } from '@auth/routes/authRoutes'
 import { Application } from 'express'
 import { authMiddleware } from '@global/helpers/auth-middleware'
 import { followerRoutes } from '@follower/routes/followerRoutes'
+import { notificationRoutes } from '@notification/routes/notificationRoutes'
 
 const BASE_PATH = '/api/v1'
 
@@ -21,6 +22,7 @@ export default (app: Application) => {
     app.use(BASE_PATH, authMiddleware.verifyUser, reactionsRoutes.routes())
     app.use(BASE_PATH, authMiddleware.verifyUser, commentRoutes.routes())
     app.use(BASE_PATH, authMiddleware.verifyUser, followerRoutes.routes())
+    app.use(BASE_PATH, authMiddleware.verifyUser, notificationRoutes.routes())
   }
 
   routes()

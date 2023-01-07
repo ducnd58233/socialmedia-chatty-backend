@@ -9,6 +9,9 @@ import { NotificationModel } from '@notification/models/notification.schema'
 import { socketIONotificationObject } from '@socket/notification'
 import { notificationTemplate } from '@service/emails/templates/notifications/notification-template'
 import { emailQueue } from '@service/queues/email.queue'
+import { UserCache } from '@service/redis/user.cache'
+
+const userCache: UserCache = new UserCache()
 
 class FollowerService {
   public async addFollowerToDB(
@@ -53,7 +56,7 @@ class FollowerService {
     const response: [UpdateWriteOpResult, UpdateWriteOpResult, IUserDocument | null] = await Promise.all([
       updateFollowingCount,
       updateFollowersCount,
-      UserModel.findOne({ _id: followeeId })
+      userCache.getUserFromCache(followeeId)
     ])
 
     // send follower notification
