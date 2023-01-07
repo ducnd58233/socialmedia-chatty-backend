@@ -56,7 +56,7 @@ class FollowerService {
       UserModel.findOne({ _id: followeeId })
     ])
 
-    // send comments notification
+    // send follower notification
     if (response[2]?.notifications.follows && userId !== followeeId) {
       const notificationModel: INotificationDocument = new NotificationModel()
       const notifications = await notificationModel.insertNotification({
